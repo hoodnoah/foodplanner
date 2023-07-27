@@ -10,7 +10,7 @@ namespace FoodPlanner.Models
   }
 
 
-  class RecipeDb : DbContext
+  public class RecipeDb : DbContext
   {
     public RecipeDb(DbContextOptions<RecipeDb> options) : base(options) { }
 
