@@ -1,19 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 
-public class Recipe
+namespace FoodPlanner.Models
 {
-  public int Id { get; set; }
-  public string? Name { get; set; }
-  public DateTime WeekLastUsed { get; set; }
+  public class Recipe
+  {
+    public int Id { get; set; }
+    public string? Name { get; set; }
+    public DateTime WeekLastUsed { get; set; }
+  }
+
+
+  class RecipeDb : DbContext
+  {
+    public RecipeDb(DbContextOptions<RecipeDb> options) : base(options) { }
+
+    public DbSet<Recipe> Recipes => Set<Recipe>();
+  }
+
 }
-
-public class RecipeDb : DbContext
-{
-
-  // Constructor
-  public RecipeDb(DbContextOptions<RecipeDb> options) : base(options) { }
-
-  // Property containing the recipes
-  public DbSet<Recipe> Recipes => Set<Recipe>();
-}
-
