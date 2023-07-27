@@ -6,7 +6,7 @@ namespace FoodPlanner.Models
   {
     public int Id { get; set; }
     public string? Name { get; set; }
-    public DateTime WeekLastUsed { get; set; }
+    public int? WeekLastUsed { get; set; }
   }
 
 

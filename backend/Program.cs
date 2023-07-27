@@ -14,8 +14,8 @@ builder.Services.ConfigureHttpJsonOptions(opt =>
 
 var app = builder.Build();
 
-app.MapGet("/recipes", async (RecipeDb db) => await db.Recipes.ToListAsync());
-app.MapPost("/recipe", async (RecipeDb db, Recipe recipe) =>
+app.MapGet("/thisWeek", (RecipeService service) => service.GetWeeklyRecipes());
+app.MapPost("/addRecipe", async (RecipeDb db, Recipe recipe) =>
 {
   await db.Recipes.AddAsync(recipe);
   await db.SaveChangesAsync();
