@@ -1,27 +1,35 @@
 using Microsoft.EntityFrameworkCore;
 
-// Local using
-using FoodPlanner.Models;
-
 var builder = WebApplication.CreateBuilder(args);
-// builder.Services.AddDbContext<RecipeDb>(opt => opt.UseInMemoryDatabase("RecipesList"));
-builder.Services.AddDbContext<RecipeDb>(opt => opt.UseNpgsql(@"Host=localhost;Database=foodplanner;Username=postgres;Password=test_password"));
-builder.Services.ConfigureHttpJsonOptions(opt =>
-{
-  opt.SerializerOptions.WriteIndented = true;
-  opt.SerializerOptions.IncludeFields = true;
-});
+
+// Add services to the container.
+builder.Services.AddDbContext<RecipeContext>(options => options.UseInMemoryDatabase("recipes"));
 
 var app = builder.Build();
 
-app.MapGet("/thisWeek", (RecipeService service) => service.GetWeeklyRecipes());
-app.MapPost("/addRecipe", async (RecipeDb db, Recipe recipe) =>
+app.MapGet("/recipes", async (RecipeContext db) =>
 {
-  await db.Recipes.AddAsync(recipe);
+  return await db.Recipes.ToListAsync();
+});
+
+app.MapPost("/recipes", async (RecipeContext db, Recipe recipe) =>
+{
+  db.Recipes.Add(recipe);
   await db.SaveChangesAsync();
-  return Results.Created($"/recipe/{recipe.Id}", recipe);
+  return Results.Created($"/recipes/{recipe.Id}", recipe);
 });
 
 app.Run();
 
-public partial class Program { }
+public class Recipe
+{
+  public int Id { get; set; }
+  public string? Name { get; set; }
+
+}
+
+public class RecipeContext : DbContext
+{
+  public RecipeContext(DbContextOptions<RecipeContext> options) : base(options) { }
+  public DbSet<Recipe> Recipes { get; set; }
+}
