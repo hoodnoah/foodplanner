@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<RecipeContext>(options => options.UseInMemoryDatabase("recipes"));
+builder.Services.AddDbContext<RecipeContext>(options => options.UseNpgsql(@"Host=localhost;Username=test_user;Password=test_password;Database=recipes"));
 
 var app = builder.Build();
 
@@ -33,3 +33,5 @@ public class RecipeContext : DbContext
   public RecipeContext(DbContextOptions<RecipeContext> options) : base(options) { }
   public DbSet<Recipe> Recipes { get; set; }
 }
+
+public partial class Program { }
