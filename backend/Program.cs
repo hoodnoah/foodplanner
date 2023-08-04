@@ -12,26 +12,14 @@ app.MapGet("/recipes", async (RecipeContext db) =>
   return await db.Recipes.ToListAsync();
 });
 
-app.MapPost("/recipes", async (RecipeContext db, Recipe recipe) =>
+app.MapPost("/recipes", async (RecipeContext db, RecipeDTO recipe) =>
 {
-  db.Recipes.Add(recipe);
+  Recipe newRecipe = new Recipe { Name = recipe.Name };
+  db.Recipes.Add(newRecipe);
   await db.SaveChangesAsync();
-  return Results.Created($"/recipes/{recipe.Id}", recipe);
+  return Results.Created($"/recipes/{newRecipe.Id}", recipe);
 });
 
 app.Run();
-
-public class Recipe
-{
-  public int Id { get; set; }
-  public string? Name { get; set; }
-
-}
-
-public class RecipeContext : DbContext
-{
-  public RecipeContext(DbContextOptions<RecipeContext> options) : base(options) { }
-  public DbSet<Recipe> Recipes { get; set; }
-}
 
 public partial class Program { }
