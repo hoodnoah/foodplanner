@@ -26,7 +26,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IDisp
       // Add dbContext
       services.AddDbContext<RecipeContext>(Options =>
       {
-        Options.UseNpgsql("Host=localhost;Port=5432;Database=recipes_test;Username=test_user;Password=test_password");
+        Options.UseNpgsql("Host=postgres;Port=5432;Database=recipes_test;Username=test_user;Password=test_password");
       });
 
       // Create an intermediate service provider
